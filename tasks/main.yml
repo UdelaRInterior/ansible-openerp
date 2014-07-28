@@ -1,0 +1,207 @@
+---
+
+- name: Install OpenERP dependencies
+  action: apt pkg=python-psycopg2,python-simplejson,python-lxml,python-tz,python-imaging,python-yaml,python-reportlab,python-mako,python-pychart,python-werkzeug,python-dateutil,python-unittest2,python-mock,python-openid,python-docutils,python-feedparser,python-gdata,python-jinja2,python-psutil,python-pydot,python-webdav,python-vatnumber,python-vobject,python-xlwt,python-ldap,python-openssl,python-egenix-mxdatetime,python-zsi
+          state=installed
+          update_cache=yes
+  tags:
+    - openerp
+    - openerp_packages
+
+- name: Install common tools
+  action: apt pkg=xauth,python-pip
+          state=installed install_recommends=yes
+  tags:
+    - openerp
+    - openerp_packages
+
+- name: Add OpenERP system user
+  user: name={{ openerp_user }} shell=/bin/bash
+        password={{ openerp_user_passwd }} update_password=on_create
+  tags:
+    - openerp
+    - openerp_user
+
+- name: Create log directory
+  file: path={{ openerp_logdir }} state=directory
+        owner={{ openerp_user }} group={{ openerp_user }} force=no
+  tags:
+    - openerp
+    - openerp_log
+
+- name: Project repository exists? (Mercurial)
+  stat: path={{ openerp_repo_dest }}
+  register: project_path
+  tags:
+    - openerp
+    - openerp_project
+
+- name: Clone project repository (Mercurial)
+  sudo_user: "{{ openerp_user }}"
+  hg:   repo={{ openerp_repo_url }}
+        dest={{ openerp_repo_dest }}
+        revision={{ openerp_repo_rev }}
+        force=no
+  when: openerp_repo_type == 'hg' and project_path.stat.exists == False and openerp_repo_url
+  tags:
+    - openerp
+    - openerp_project
+
+- name: Clone project repository (Git)
+  sudo_user: "{{ openerp_user }}"
+  git:  repo={{ openerp_repo_url }}
+        dest={{ openerp_repo_dest }}
+        version={{ openerp_repo_rev }}
+        update=no
+        force=no
+  when: openerp_repo_type == 'git' and openerp_repo_url
+  tags:
+    - openerp
+    - openerp_project
+
+# [ OpenERP 6.0 ]
+- name: Copy OpenERP configuration file (6.0)
+  template: src=openerp-server-v60.conf dest={{ openerp_config_file }}
+        owner={{ openerp_user }} group={{ openerp_user }} mode=0600
+        force={{ openerp_force_config and 'yes' or 'no' }}
+        backup=yes
+  when: openerp_version == 6.0
+  tags:
+    - openerp
+    - openerp_config
+
+- name: Copy OpenERP init script (8.0)
+  template: src=openerp-server-v60.init dest=/etc/init.d/{{ openerp_service }}
+        owner=root group=root mode=0755
+        force={{ openerp_force_config and 'yes' or 'no' }}
+        backup=yes
+  when: openerp_version == 6.0
+  tags:
+    - openerp
+    - openerp_config
+# [/ OpenERP 6.0 ]
+
+# [ OpenERP 6.1 ]
+- name: Copy OpenERP configuration file (6.1)
+  template: src=openerp-server-v61.conf dest={{ openerp_config_file }}
+        owner={{ openerp_user }} group={{ openerp_user }} mode=0600
+        force={{ openerp_force_config and 'yes' or 'no' }}
+        backup=yes
+  when: openerp_version == 6.1
+  tags:
+    - openerp
+    - openerp_config
+
+- name: Copy OpenERP init script (8.0)
+  template: src=openerp-server-v61.init dest=/etc/init.d/{{ openerp_service }}
+        owner=root group=root mode=0755
+        force={{ openerp_force_config and 'yes' or 'no' }}
+        backup=yes
+  when: openerp_version == 6.1
+  tags:
+    - openerp
+    - openerp_config
+# [/ OpenERP 6.1 ]
+
+# [ OpenERP 7.0 ]
+- name: Copy OpenERP configuration file (7.0)
+  template: src=openerp-server-v70.conf dest={{ openerp_config_file }}
+        owner={{ openerp_user }} group={{ openerp_user }} mode=0600
+        force={{ openerp_force_config and 'yes' or 'no' }}
+        backup=yes
+  when: openerp_version == 7.0
+  tags:
+    - openerp
+    - openerp_config
+
+- name: Copy OpenERP init script (8.0)
+  template: src=openerp-server-v70.init dest=/etc/init.d/{{ openerp_service }}
+        owner=root group=root mode=0755
+        force={{ openerp_force_config and 'yes' or 'no' }}
+        backup=yes
+  when: openerp_version == 7.0
+  tags:
+    - openerp
+    - openerp_config
+# [/ OpenERP 7.0 ]
+
+- name: PostgreSQL - Add the OpenERP user
+  delegate_to: "{{ openerp_config_db_host in [False, 'localhost', '127.0.0.1'] and inventory_hostname or openerp_config_db_host }}"
+  remote_user: "{{ openerp_config_db_host_user }}"
+  sudo_user: postgres
+  postgresql_user: name={{ openerp_config_db_user }}
+                   role_attr_flags=CREATEDB,NOSUPERUSER
+  tags:
+    - openerp
+    - openerp_postgresql
+
+- name: PostgreSQL - Set the OpenERP user password
+  delegate_to: "{{ openerp_config_db_host in [False, 'localhost', '127.0.0.1'] and inventory_hostname or openerp_config_db_host }}"
+  remote_user: "{{ openerp_config_db_host_user }}"
+  sudo_user: postgres
+  postgresql_user: name={{ openerp_config_db_user }}
+                   password={{ openerp_config_db_passwd }}
+  when: openerp_config_db_passwd is defined and openerp_config_db_passwd
+  tags:
+    - openerp
+    - openerp_postgresql
+
+- name: PostgreSQL - Create databases
+  delegate_to: "{{ openerp_config_db_host in [False, 'localhost', '127.0.0.1'] and inventory_hostname or openerp_config_db_host }}"
+  remote_user: "{{ openerp_config_db_host_user }}"
+  sudo_user: postgres
+  postgresql_db:
+    name: "{{ item.name }}"
+    owner: "{{ openerp_config_db_user }}"
+    encoding: 'UTF-8'
+    lc_collate: "{{ item.locale}}"
+    lc_ctype: "{{ item.locale }}"
+    template: "template0"
+    state: present
+  with_items: openerp_databases
+  tags:
+    - openerp
+    - openerp_postgresql
+
+- name: PostgreSQL - Active the 'unaccent' extension on databases
+  delegate_to: "{{ openerp_config_db_host in [False, 'localhost', '127.0.0.1'] and inventory_hostname or openerp_config_db_host }}"
+  remote_user: "{{ openerp_config_db_host_user }}"
+  sudo_user: postgres
+  shell: "psql {{ item.name }} -c 'CREATE EXTENSION IF NOT EXISTS \"unaccent\";'"
+  with_items: openerp_databases
+  when: openerp_config_unaccent
+  changed_when: False
+  tags:
+    - openerp
+    - openerp_postgresql
+
+- name: Set OpenERP service runlevels
+  command: update-rc.d {{ openerp_service }} defaults
+  changed_when: False
+  tags:
+    - openerp
+    - openerp_init
+
+- name: Enable OpenERP service
+  service: name={{ openerp_service }} enabled=yes
+  when: openerp_init == True
+  tags:
+    - openerp
+    - openerp_init
+
+- name: Disable OpenERP service
+  service: name={{ openerp_service }} enabled=no
+  when: openerp_init == False
+  tags:
+    - openerp
+    - openerp_init
+
+- name: Set SSH public keys for the OpenERP user
+  authorized_key: user={{ openerp_user }}
+                  key="{{ lookup('file', item) }}"
+  with_fileglob:
+    - "{{ openerp_user_sshkeys }}"
+  when: openerp_user_sshkeys is defined and openerp_user_sshkeys
+  tags:
+    - openerp
+    - openerp_ssh

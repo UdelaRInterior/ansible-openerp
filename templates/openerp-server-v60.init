@@ -1,0 +1,72 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:		{{ openerp_service }}
+# Required-Start:	$remote_fs $syslog
+# Required-Stop:	$remote_fs $syslog
+# Should-Start:		$network
+# Should-Stop:		$network
+# Default-Start:	2 3 4 5
+# Default-Stop:		0 1 6
+# Short-Description:	Enterprise Resource Management software
+# Description:		Open ERP is a complete ERP and CRM software.
+### END INIT INFO
+
+PATH=/usr/local/bin:/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin
+WORKDIR={{ openerp_workdir }}
+DAEMON={{ openerp_rootdir }}/bin/openerp-server.py
+NAME={{ openerp_service }}
+DESC={{ openerp_service }}
+CONFIG={{ openerp_config_file }}
+LOGFILE={{ openerp_logdir }}/{{ openerp_service }}.log
+USER={{ openerp_user }}
+
+test -x ${DAEMON} || exit 0
+
+set -e
+
+case "${1}" in
+	start)
+		echo -n "Starting ${DESC}: "
+
+		start-stop-daemon --chdir=${WORKDIR} --start --quiet --pidfile /var/run/${NAME}.pid \
+			--chuid ${USER} --background --make-pidfile \
+			--exec ${DAEMON} -- --config=${CONFIG} \
+			    --logfile=${LOGFILE}
+
+		echo "${NAME}."
+		;;
+
+	stop)
+		echo -n "Stopping ${DESC}: "
+
+		start-stop-daemon --stop --quiet --pidfile /var/run/${NAME}.pid \
+			--oknodo
+
+		echo "${NAME}."
+		;;
+
+	restart|force-reload)
+		echo -n "Restarting ${DESC}: "
+
+		start-stop-daemon --stop --quiet --pidfile /var/run/${NAME}.pid \
+			--oknodo
+
+		sleep 1
+
+		start-stop-daemon --start --quiet --pidfile /var/run/${NAME}.pid \
+			--chuid ${USER} --background --make-pidfile \
+			--exec ${DAEMON} -- --config=/etc/openerp-server.conf \
+			    --logfile=/var/log/openerp-server.log
+
+		echo "${NAME}."
+		;;
+
+	*)
+		N=/etc/init.d/${NAME}
+		echo "Usage: ${NAME} {start|stop|restart|force-reload}" >&2
+		exit 1
+		;;
+esac
+
+exit 0

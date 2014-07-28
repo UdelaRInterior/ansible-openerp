@@ -1,0 +1,35 @@
+openerp_service: openerp-server
+openerp_version: 7.0
+openerp_user: openerp
+openerp_user_passwd: openerp
+openerp_logdir: "/var/log/{{ openerp_user }}"
+openerp_workdir: "/home/{{ openerp_user }}/oerp"
+openerp_rootdir: "/home/{{ openerp_user }}/oerp/server"
+openerp_init: True
+openerp_databases: []      # [{name: prod, locale: 'en_US.UTF-8'}]
+openerp_config_file: "/home/{{ openerp_user }}/{{ openerp_service }}.conf"
+openerp_force_config: False
+openerp_repo_type: git     # git or hg
+openerp_repo_url: https://github.com/odoo/odoo.git
+openerp_repo_dest: "{{ openerp_rootdir }}"
+openerp_repo_rev: 8.0
+
+# Configuration options
+openerp_config_admin_passwd: admin
+openerp_config_addons_path: "/home/{{ openerp_user }}/oerp/server/addons,/home/{{ openerp_user }}/oerp/server/openerp/addons"
+openerp_config_auto_reload: False
+openerp_config_db_host: False
+openerp_config_db_host_user: "{{ ansible_ssh_user }}"
+openerp_config_db_port: False
+openerp_config_db_user: openerp
+openerp_config_db_passwd: False
+openerp_config_dbfilter: '.*'
+openerp_config_proxy_mode: False
+openerp_config_unaccent: True
+openerp_config_workers: 0
+openerp_config_netrpc_port: 8070
+openerp_config_xmlrpc_port: 8069
+openerp_config_xmlrpcs_port: 8071
+
+# Extra options
+openerp_user_sshkeys: False    # ../../path/to/public_keys/*

@@ -26,6 +26,7 @@ openerp_config_db_passwd: False
 openerp_config_dbfilter: '.*'
 openerp_config_proxy_mode: False
 openerp_config_unaccent: True
+openerp_config_without_demo: False
 openerp_config_workers: 0
 openerp_config_netrpc_port: 8070
 openerp_config_xmlrpc_port: 8069

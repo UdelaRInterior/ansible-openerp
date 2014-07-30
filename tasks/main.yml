@@ -8,6 +8,22 @@
     - openerp
     - openerp_packages
 
+- name: Install OpenERP dependencies (Debian >= 7)
+  action: apt pkg=python-babel
+          state=installed
+  when: ansible_os_family == "Debian" and ansible_lsb.major_release|int >= 7
+  tags:
+    - openerp
+    - openerp_packages
+
+- name: Install OpenERP dependencies (Debian < 7)
+  action: apt pkg=python-pybabel
+          state=installed
+  when: ansible_os_family == "Debian" and ansible_lsb.major_release|int < 7
+  tags:
+    - openerp
+    - openerp_packages
+
 - name: Install common tools
   action: apt pkg=xauth,python-pip
           state=installed install_recommends=yes

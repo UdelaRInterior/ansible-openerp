@@ -21,7 +21,7 @@ openerp_config_auto_reload: False
 openerp_config_db_host: False
 openerp_config_db_host_user: "{{ ansible_ssh_user }}"
 openerp_config_db_port: False
-openerp_config_db_user: openerp
+openerp_config_db_user: "{{ openerp_user }}"
 openerp_config_db_passwd: False
 openerp_config_dbfilter: '.*'
 openerp_config_proxy_mode: False

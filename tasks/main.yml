@@ -86,7 +86,7 @@
     - openerp
     - openerp_config
 
-- name: Copy OpenERP init script (8.0)
+- name: Copy OpenERP init script (6.0)
   template: src=openerp-server-v60.init dest=/etc/init.d/{{ openerp_service }}
         owner=root group=root mode=0755
         force={{ openerp_force_config and 'yes' or 'no' }}

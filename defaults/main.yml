@@ -12,7 +12,7 @@ openerp_force_config: False
 openerp_repo_type: git     # git or hg
 openerp_repo_url: https://github.com/odoo/odoo.git
 openerp_repo_dest: "{{ openerp_rootdir }}"
-openerp_repo_rev: 8.0
+openerp_repo_rev: 7.0
 
 # Configuration options
 openerp_config_admin_passwd: admin

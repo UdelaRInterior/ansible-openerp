@@ -1,5 +1,5 @@
 openerp_service: openerp-server
-openerp_version: 7.0
+openerp_version: 7.0                                # 6.0 / 6.1 / 7.0
 openerp_user: openerp
 openerp_user_passwd: openerp
 openerp_logdir: "/var/log/{{ openerp_user }}"
@@ -26,9 +26,9 @@ openerp_config_db_maxconn: 64
 openerp_config_db_name: False
 openerp_config_db_passwd: False
 openerp_config_db_port: False
-openerp_config_db_template: template1
+openerp_config_db_template: template1               # ignored for 6.0
 openerp_config_db_user: "{{ openerp_user }}"
-openerp_config_dbfilter: '.*'
+openerp_config_dbfilter: '.*'                       # ignored for 6.0
 openerp_config_debug_mode: False
 openerp_config_email_from: False
 openerp_config_limit_memory_hard: 805306368         # 7.0 only
@@ -40,17 +40,17 @@ openerp_config_list_db: True
 openerp_config_log_level: info
 openerp_config_logfile: None
 openerp_config_logrotate: True
-openerp_config_max_cron_threads: 2
+openerp_config_max_cron_threads: 2                  # ignored for 6.0
 openerp_config_netrpc: True                         # ignored for 7.0
 openerp_config_netrpc_interface: ''                 # ignored for 7.0
 openerp_config_netrpc_port: 8070                    # ignored for 7.0
 openerp_config_osv_memory_age_limit: 1.0
 openerp_config_osv_memory_count_limit: False
 openerp_config_pidfile: None
-openerp_config_proxy_mode: False
+openerp_config_proxy_mode: False                    # ignored for 6.0
 openerp_config_secure_cert_file: server.cert
 openerp_config_secure_pkey_file: server.pkey
-openerp_config_server_wide_modules: None
+openerp_config_server_wide_modules: None            # ignored for 6.0
 openerp_config_smtp_password: False
 openerp_config_smtp_port: 25
 openerp_config_smtp_server: localhost
@@ -62,7 +62,7 @@ openerp_config_static_http_url_prefix: None
 openerp_config_syslog: False
 openerp_config_timezone: False
 openerp_config_translate_modules: ['all']
-openerp_config_unaccent: True
+openerp_config_unaccent: True                       # ignored for 6.0
 openerp_config_virtual_memory_limit: 805306368      # 6.1 only
 openerp_config_virtual_memory_reset: 671088640      # 6.1 only
 openerp_config_without_demo: False

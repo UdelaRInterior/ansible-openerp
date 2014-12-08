@@ -17,6 +17,8 @@ openerp_repo_rev: 7.0
 # Configuration options
 openerp_config_addons_path: "/home/{{ openerp_user }}/oerp/server/addons,/home/{{ openerp_user }}/oerp/server/openerp/addons"
 openerp_config_admin_passwd: admin
+openerp_config_cache_timeout: 100000                # ignored for 7.0
+openerp_config_cpu_time_limit: 60                   # 6.1 only
 openerp_config_csv_internal_sep: ','
 openerp_config_db_host: False
 openerp_config_db_host_user: "{{ ansible_ssh_user }}"
@@ -29,16 +31,19 @@ openerp_config_db_user: "{{ openerp_user }}"
 openerp_config_dbfilter: '.*'
 openerp_config_debug_mode: False
 openerp_config_email_from: False
-openerp_config_limit_memory_hard: 805306368
-openerp_config_limit_memory_soft: 671088640
-openerp_config_limit_request: 8192
-openerp_config_limit_time_cpu: 60
-openerp_config_limit_time_real: 120
+openerp_config_limit_memory_hard: 805306368         # 7.0 only
+openerp_config_limit_memory_soft: 671088640         # 7.0 only
+openerp_config_limit_request: 8192                  # 7.0 only
+openerp_config_limit_time_cpu: 60                   # 7.0 only
+openerp_config_limit_time_real: 120                 # 7.0 only
 openerp_config_list_db: True
 openerp_config_log_level: info
 openerp_config_logfile: None
 openerp_config_logrotate: True
 openerp_config_max_cron_threads: 2
+openerp_config_netrpc: True                         # ignored for 7.0
+openerp_config_netrpc_interface: ''                 # ignored for 7.0
+openerp_config_netrpc_port: 8070                    # ignored for 7.0
 openerp_config_osv_memory_age_limit: 1.0
 openerp_config_osv_memory_count_limit: False
 openerp_config_pidfile: None
@@ -58,6 +63,8 @@ openerp_config_syslog: False
 openerp_config_timezone: False
 openerp_config_translate_modules: ['all']
 openerp_config_unaccent: True
+openerp_config_virtual_memory_limit: 805306368      # 6.1 only
+openerp_config_virtual_memory_reset: 671088640      # 6.1 only
 openerp_config_without_demo: False
 openerp_config_workers: 0                           # 7.0 only
 openerp_config_xmlrpc: True

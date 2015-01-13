@@ -2,6 +2,7 @@ openerp_service: openerp-server
 openerp_version: 7.0                                # 6.0 / 6.1 / 7.0
 openerp_user: openerp
 openerp_user_passwd: openerp
+openerp_user_system: False
 openerp_logdir: "/var/log/{{ openerp_user }}"
 openerp_workdir: "/home/{{ openerp_user }}/oerp"
 openerp_rootdir: "/home/{{ openerp_user }}/oerp/server"

@@ -46,7 +46,7 @@
     - openerp
     - openerp_log
 
-- name: Project repository exists? (Mercurial)
+- name: Project repository already cloned?
   stat: path={{ openerp_repo_dest }}
   register: project_path
   tags:
@@ -58,8 +58,8 @@
   hg:   repo={{ openerp_repo_url }}
         dest={{ openerp_repo_dest }}
         revision={{ openerp_repo_rev }}
-        force=no
-  when: openerp_repo_type == 'hg' and project_path.stat.exists == False and openerp_repo_url
+  when: openerp_repo_type == 'hg' and openerp_repo_url
+        and (openerp_repo_update or (project_path.stat.exists == False))
   tags:
     - openerp
     - openerp_project
@@ -69,8 +69,8 @@
   git:  repo={{ openerp_repo_url }}
         dest={{ openerp_repo_dest }}
         version={{ openerp_repo_rev }}
-        update=no
-        force=no
+        update={{ project_path.stat.exists == False and 'yes'
+                  or (openerp_repo_update and 'yes' or 'no') }}
   when: openerp_repo_type == 'git' and openerp_repo_url
   tags:
     - openerp

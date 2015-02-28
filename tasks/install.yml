@@ -1,0 +1,82 @@
+---
+
+- name: Install required tools
+  apt:  pkg={{ item }}
+        state=installed
+        update_cache=yes
+  with_items: openerp_required_tools
+  tags:
+    - openerp_required_tools
+
+- name: Install OpenERP dependencies
+  apt:  pkg={{ item }}
+        state=installed
+        update_cache=yes
+  with_items: openerp_debian_packages
+  tags:
+    - openerp_packages
+
+- name: Install OpenERP dependencies (Debian >= 7)
+  apt:  pkg=python-babel
+        state=installed
+  when: ansible_os_family == "Debian" and ansible_lsb.major_release|int >= 7
+  tags:
+    - openerp_packages
+
+- name: Install OpenERP dependencies (Debian < 7)
+  apt:  pkg=python-pybabel
+        state=installed
+  when: ansible_os_family == "Debian" and ansible_lsb.major_release|int < 7
+  tags:
+    - openerp_packages
+
+- name: Add OpenERP system user
+  user: name={{ openerp_user }} shell=/bin/bash
+        password={{ openerp_user_passwd }} update_password=on_create
+        system={{ openerp_user_system }}
+  tags:
+    - openerp_user
+
+- name: Create log directory
+  file: path={{ openerp_logdir }} state=directory
+        owner={{ openerp_user }} group={{ openerp_user }} force=no
+  tags:
+    - openerp_log
+
+- name: Project repository already cloned?
+  stat: path={{ openerp_repo_dest }}
+  register: project_path
+  tags:
+    - openerp_project
+
+- name: Clone project repository (Mercurial)
+  sudo: yes
+  sudo_user: "{{ openerp_user }}"
+  hg:   repo={{ openerp_repo_url }}
+        dest={{ openerp_repo_dest }}
+        revision={{ openerp_repo_rev }}
+  when: openerp_repo_type == 'hg' and openerp_repo_url
+        and (openerp_repo_update or (project_path.stat.exists == False))
+  tags:
+    - openerp_project
+
+- name: Clone project repository (Git)
+  sudo: yes
+  sudo_user: "{{ openerp_user }}"
+  git:  repo={{ openerp_repo_url }}
+        dest={{ openerp_repo_dest }}
+        version={{ openerp_repo_rev }}
+        update={{ project_path.stat.exists == False and 'yes'
+                  or (openerp_repo_update and 'yes' or 'no') }}
+  when: openerp_repo_type == 'git' and openerp_repo_url
+  tags:
+    - openerp_project
+
+- name: Set SSH public keys for the OpenERP user
+  authorized_key: user={{ openerp_user }}
+                  key="{{ lookup('file', item) }}"
+  with_fileglob:
+    - "{{ openerp_user_sshkeys }}"
+  when: openerp_user_sshkeys is defined and openerp_user_sshkeys
+  tags:
+    - openerp_ssh

@@ -1,0 +1,40 @@
+---
+
+# [ 6.0 ]
+- name: Copy OpenERP init script (6.0)
+  template: src=openerp-server-v60.init dest=/etc/init.d/{{ openerp_service }}
+        owner=root group=root mode=0755
+        force={{ openerp_force_config and 'yes' or 'no' }}
+        backup=yes
+  when: openerp_version|float == 6.0
+# [/ 6.0 ]
+
+# [ 6.1 ]
+- name: Copy OpenERP init script (6.1)
+  template: src=openerp-server-v61.init dest=/etc/init.d/{{ openerp_service }}
+        owner=root group=root mode=0755
+        force={{ openerp_force_config and 'yes' or 'no' }}
+        backup=yes
+  when: openerp_version|float == 6.1
+# [/ 6.1 ]
+#
+# [ 7.0 ]
+- name: Copy OpenERP init script (7.0)
+  template: src=openerp-server-v70.init dest=/etc/init.d/{{ openerp_service }}
+        owner=root group=root mode=0755
+        force={{ openerp_force_config and 'yes' or 'no' }}
+        backup=yes
+  when: openerp_version|float == 7.0
+# [/ 7.0 ]
+
+- name: Set OpenERP service runlevels
+  command: update-rc.d {{ openerp_service }} defaults
+  changed_when: False
+
+- name: Enable OpenERP service
+  service: name={{ openerp_service }} enabled=yes
+  when: openerp_init == True
+
+- name: Disable OpenERP service
+  service: name={{ openerp_service }} enabled=no
+  when: openerp_init == False

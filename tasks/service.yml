@@ -32,7 +32,7 @@
   changed_when: False
 
 - name: Enable OpenERP service
-  service: name={{ openerp_service }} enabled=yes
+  service: name={{ openerp_service }} enabled=yes state=started
   when: openerp_init == True
 
 - name: Disable OpenERP service

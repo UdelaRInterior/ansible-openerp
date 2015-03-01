@@ -20,7 +20,9 @@ openerp_repo_update: True   # Update the working copy or not. This option is
                             # WARNING: uncommited changes will be discarded!
 
 # Configuration options
-openerp_config_addons_path: "/home/{{ openerp_user }}/oerp/server/addons,/home/{{ openerp_user }}/oerp/server/openerp/addons"
+openerp_config_addons_path:
+    - "/home/{{ openerp_user }}/oerp/server/openerp/addons"
+    - "/home/{{ openerp_user }}/oerp/server/addons"
 openerp_config_admin_passwd: admin
 openerp_config_cache_timeout: 100000                # ignored for 7.0
 openerp_config_cpu_time_limit: 60                   # 6.1 only

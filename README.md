@@ -1,4 +1,4 @@
-# OpenERP
+# OpenERP [![Build Status](https://travis-ci.org/osiell/ansible-openerp.png)](https://travis-ci.org/osiell/ansible-openerp)
 
 Ansible role to install OpenERP 6.0, 6.1 or 7.0 from a Git or Mercurial
 repository, and configure it.

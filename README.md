@@ -3,6 +3,8 @@
 Ansible role to install OpenERP 6.0, 6.1 or 7.0 from a Git or Mercurial
 repository, and configure it.
 
+Minimum Ansible Version: 1.8
+
 ## Systems supported
 
 - Debian Wheezy (7.0)

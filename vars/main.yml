@@ -35,5 +35,3 @@ openerp_debian_packages:
     - python-openssl
     - python-egenix-mxdatetime
     - python-zsi
-    - python-babel      # Debian >= 7
-    - python-pybabel    # Debian < 7

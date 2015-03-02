@@ -27,10 +27,6 @@
   when: openerp_version|float == 7.0
 # [/ 7.0 ]
 
-- name: Set OpenERP service runlevels
-  command: update-rc.d {{ openerp_service }} defaults
-  changed_when: False
-
 - name: Enable OpenERP service
   service: name={{ openerp_service }} enabled=yes state=started
   when: openerp_init == True

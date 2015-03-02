@@ -7,9 +7,75 @@ Minimum Ansible Version: 1.8
 
 ## Systems supported
 
-- Debian Wheezy (7.0)
-- Ubuntu Precise (12.04)
-- Ubuntu Trusty (14.04)
+* Debian
+    - Squeeze   (6)
+    - Wheezy    (7)
+* Ubuntu
+    - Precise   (12.04)
+    - Trusty    (14.04)
+
+## Example (Playbook)
+
+Standard installation (assuming that PostgreSQL is installed and running on
+the same host):
+
+```yaml
+- name: OpenERP
+  hosts: openerp_server
+  sudo: yes
+  roles:
+    - openerp
+  vars:
+    - openerp_version: 8.0
+    - openerp_config_admin_passwd: SuPerPassWorD
+```
+
+Standard installation but with PostgreSQL installed on a remote host (and
+available from your Ansible inventory):
+
+```yaml
+- name: OpenERP
+  hosts: openerp_server
+  sudo: yes
+  roles:
+    - openerp
+  vars:
+    - openerp_version: 8.0
+    - openerp_config_admin_passwd: SuPerPassWorD
+    - openerp_config_db_host: pg_server
+    - openerp_config_db_user: openerp
+    - openerp_config_db_passwd: PaSsWoRd
+```
+
+Installation from a personnal Git repository such as your repository looks
+like this:
+
+```sh
+REPO/
+├── server              # could be a sub-repository of https://github.com/odoo/odoo
+├── addons_oca_web      # another sub-repository (https://github.com/OCA/web here)
+└── addons              # custom modules
+```
+
+```yaml
+- name: OpenERP
+  hosts: openerp_server
+  sudo: yes
+  roles:
+    - openerp
+  vars:
+    - openerp_version: 8.0
+    - openerp_repo_type: git
+    - openerp_repo_url: https://SERVER/REPO
+    - openerp_repo_rev: master
+    - openerp_repo_dest: "/home/{{ openerp_user }}/oerp"
+    - openerp_config_admin_passwd: SuPerPassWorD
+    - openerp_config_addons_path:
+        - "/home/{{ openerp_user }}/oerp/server/openerp/addons"
+        - "/home/{{ openerp_user }}/oerp/server/addons"
+        - "/home/{{ openerp_user }}/oerp/addons_oca_web"
+        - "/home/{{ openerp_user }}/oerp/addons"
+```
 
 ## Variables
 
@@ -28,7 +94,7 @@ openerp_force_config: False
 openerp_repo_type: git     # git or hg
 openerp_repo_url: https://github.com/odoo/odoo.git
 openerp_repo_dest: "{{ openerp_rootdir }}"
-openerp_repo_rev: 7.0
+openerp_repo_rev: "{{ openerp_version }}"
 openerp_repo_update: True   # Update the working copy or not. This option is
                             # ignored on the first run (a checkout of the
                             # working copy is always processed on the given
@@ -99,28 +165,4 @@ openerp_config_xmlrpcs_port: 8071
 
 # Extra options
 openerp_user_sshkeys: False    # ../../path/to/public_keys/*
-```
-
-
-## Example (Playbook)
-
-```yaml
-- name: OpenERP Server
-  hosts: openerp_server
-  sudo: yes
-  roles:
-    - openerp
-  vars:
-    - openerp_config_db_host: pg_server
-    - openerp_config_db_user: openerp
-    - openerp_repo_type: git
-    - openerp_repo_url: https://github.com/odoo/odoo.git
-    - openerp_repo_dest: /home/openerp/oerp/server
-    - openerp_repo_rev: 7.0
-```
-
-When deploying, you can set the passwords with the `--extra-vars` option:
-
-```sh
-$ ansible-playbook -i servers servers.yml -l openerp_server --extra-vars "openerp_user_passwd=pAssWorD openerp_config_admin_passwd=SuPerPassWorD openerp_config_db_passwd=PaSswOrd"
 ```

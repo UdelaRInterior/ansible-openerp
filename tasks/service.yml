@@ -32,5 +32,5 @@
   when: openerp_init == True
 
 - name: Disable OpenERP service
-  service: name={{ openerp_service }} enabled=no
+  service: name={{ openerp_service }} enabled=no state=stopped
   when: openerp_init == False

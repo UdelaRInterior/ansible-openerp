@@ -1,0 +1,7 @@
+---
+
+- name: Restart OpenERP
+  service:
+    name: "{{ openerp_service }}"
+    state: restarted
+  when: openerp_init == True

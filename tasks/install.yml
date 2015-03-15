@@ -57,6 +57,7 @@
         revision={{ openerp_repo_rev }}
   when: openerp_repo_type == 'hg' and openerp_repo_url
         and (openerp_repo_update or (project_path.stat.exists == False))
+  notify: Restart OpenERP
   tags:
     - openerp_project
 
@@ -69,6 +70,7 @@
         update={{ project_path.stat.exists == False and 'yes'
                   or (openerp_repo_update and 'yes' or 'no') }}
   when: openerp_repo_type == 'git' and openerp_repo_url
+  notify: Restart OpenERP
   tags:
     - openerp_project
 

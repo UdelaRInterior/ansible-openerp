@@ -8,7 +8,7 @@ openerp_workdir: "/home/{{ openerp_user }}/oerp"
 openerp_rootdir: "/home/{{ openerp_user }}/oerp/server"
 openerp_init: True
 openerp_config_file: "/home/{{ openerp_user }}/{{ openerp_service }}.conf"
-openerp_force_config: False
+openerp_force_config: True
 openerp_repo_type: git     # git or hg
 openerp_repo_url: https://github.com/odoo/odoo.git
 openerp_repo_dest: "{{ openerp_rootdir }}"

@@ -162,6 +162,10 @@ openerp_config_xmlrpc_port: 8069
 openerp_config_xmlrpcs: True
 openerp_config_xmlrpcs_interface: ''
 openerp_config_xmlrpcs_port: 8071
+# Custom configuration options
+openerp_config_custom: {}
+    #your_option1: value1
+    #your_option2: value2
 
 # Extra options
 openerp_user_sshkeys: False    # ../../path/to/public_keys/*

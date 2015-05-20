@@ -1,6 +1,6 @@
 # OpenERP [![Build Status](https://travis-ci.org/osiell/ansible-openerp.png)](https://travis-ci.org/osiell/ansible-openerp)
 
-Ansible role to install OpenERP 6.0, 6.1 or 7.0 from a Git or Mercurial
+Ansible role to install OpenERP 5.0, 6.0, 6.1 or 7.0 from a Git or Mercurial
 repository, and configure it.
 
 Minimum Ansible Version: 1.8
@@ -81,7 +81,7 @@ REPO/
 
 ```yaml
 openerp_service: openerp-server
-openerp_version: 7.0                                # 6.0 / 6.1 / 7.0
+openerp_version: 7.0                                # 5.0 / 6.0 / 6.1 / 7.0
 openerp_user: openerp
 openerp_user_passwd: openerp
 openerp_user_system: False
@@ -102,7 +102,7 @@ openerp_repo_update: True   # Update the working copy or not. This option is
                             # WARNING: uncommited changes will be discarded!
 
 # OpenERP parameters
-openerp_config_addons_path:
+openerp_config_addons_path:                         # ignored for 5.0
     - "/home/{{ openerp_user }}/oerp/server/openerp/addons"
     - "/home/{{ openerp_user }}/oerp/server/addons"
 openerp_config_admin_passwd: admin
@@ -136,6 +136,7 @@ openerp_config_netrpc_port: 8070                    # ignored for 7.0
 openerp_config_osv_memory_age_limit: 1.0
 openerp_config_osv_memory_count_limit: False
 openerp_config_pidfile: None
+openerp_config_price_accuracy: 2                    # 5.0 only
 openerp_config_proxy_mode: False                    # ignored for 6.0
 openerp_config_secure_cert_file: server.cert
 openerp_config_secure_pkey_file: server.pkey

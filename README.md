@@ -26,7 +26,7 @@ the same host):
   roles:
     - openerp
   vars:
-    - openerp_version: 8.0
+    - openerp_version: 7.0
     - openerp_config_admin_passwd: SuPerPassWorD
 ```
 
@@ -40,7 +40,7 @@ available from your Ansible inventory):
   roles:
     - openerp
   vars:
-    - openerp_version: 8.0
+    - openerp_version: 7.0
     - openerp_config_admin_passwd: SuPerPassWorD
     - openerp_config_db_host: pg_server
     - openerp_config_db_user: openerp
@@ -64,7 +64,7 @@ REPO/
   roles:
     - openerp
   vars:
-    - openerp_version: 8.0
+    - openerp_version: 7.0
     - openerp_repo_type: git
     - openerp_repo_url: https://SERVER/REPO
     - openerp_repo_rev: master

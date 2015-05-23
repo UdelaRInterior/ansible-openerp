@@ -5,6 +5,11 @@
     - openerp
     - openerp_install
 
+- include: wkhtmltox.yml
+  tags:
+    - openerp
+    - openerp_wkhtmltox
+
 - include: config.yml
   tags:
     - openerp

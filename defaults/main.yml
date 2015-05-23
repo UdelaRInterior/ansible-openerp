@@ -19,6 +19,10 @@ openerp_repo_update: True   # Update the working copy or not. This option is
                             # revision)
                             # WARNING: uncommited changes will be discarded!
 
+openerp_wkhtmltox_version: 0.12.2.1 # Download URLs available in the
+                                    # 'openerp_wkhtmltox_urls' variable
+                                    # (see 'vars/main.yml')
+
 # Tasks related to PostgreSQL
 openerp_postgresql_set_user: True
 openerp_postgresql_active_unaccent: True

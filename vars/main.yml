@@ -36,3 +36,29 @@ openerp_debian_packages:
     - python-openssl
     - python-egenix-mxdatetime
     - python-zsi
+
+openerp_wkhtmltox_urls:
+    - http://sourceforge.net/projects/wkhtmltopdf/files/{{ openerp_wkhtmltox_version }}/wkhtmltox-{{ openerp_wkhtmltox_version }}_linux-{{ ansible_distribution_release }}-{{ openerp_debian_arch }}.deb
+    - http://sourceforge.net/projects/wkhtmltopdf/files/archive/{{ openerp_wkhtmltox_version }}/wkhtmltox-{{ openerp_wkhtmltox_version }}_linux-{{ ansible_distribution_release }}-{{ openerp_debian_arch }}.deb
+
+openerp_wkhtmltox_dest: "/root/wkhtmltox-{{ openerp_wkhtmltox_version }}_linux-{{ ansible_distribution_release }}-{{ openerp_debian_arch }}.deb"
+
+openerp_wkhtmltox_depends:     # Taken from the debian package
+    - fontconfig
+    - libfontconfig1
+    - libfreetype6
+    - libpng12-0
+    - zlib1g
+    - "{{ {
+            'squeeze': 'libjpeg8',
+            'wheezy': 'libjpeg8',
+            'jessie': 'libjpeg62-turbo',
+            'precise': 'libjpeg-turbo8',
+            'trusty': 'libjpeg-turbo8',
+        }[ansible_distribution_release] }}"
+    - libssl1.0.0
+    - libx11-6
+    - libxext6
+    - libxrender1
+    - libstdc++6
+    - libc6

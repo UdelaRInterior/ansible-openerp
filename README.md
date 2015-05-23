@@ -102,6 +102,10 @@ openerp_repo_update: True   # Update the working copy or not. This option is
                             # revision)
                             # WARNING: uncommited changes will be discarded!
 
+# Tasks related to PostgreSQL
+openerp_postgresql_set_user: True
+openerp_postgresql_active_unaccent: True
+
 # OpenERP parameters
 openerp_config_addons_path:                         # ignored for 5.0
     - "/home/{{ openerp_user }}/oerp/server/openerp/addons"

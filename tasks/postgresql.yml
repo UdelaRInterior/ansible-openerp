@@ -8,6 +8,7 @@
   postgresql_user: name={{ openerp_config_db_user }}
                    role_attr_flags=CREATEDB,NOSUPERUSER
   when: openerp_config_db_host not in [False, 'localhost', '127.0.0.1']
+        and openerp_postgresql_set_user
 
 - name: Local PostgreSQL - Add the OpenERP user
   sudo: yes
@@ -15,6 +16,7 @@
   postgresql_user: name={{ openerp_config_db_user }}
                    role_attr_flags=CREATEDB,NOSUPERUSER
   when: openerp_config_db_host in [False, 'localhost', '127.0.0.1']
+        and openerp_postgresql_set_user
 
 - name: Remote PostgreSQL - Set the OpenERP user password
   delegate_to: "{{ openerp_config_db_host }}"
@@ -25,6 +27,7 @@
                    password={{ openerp_config_db_passwd }}
   when: openerp_config_db_host not in [False, 'localhost', '127.0.0.1']
         and openerp_config_db_passwd is defined and openerp_config_db_passwd
+        and openerp_postgresql_set_user
 
 - name: Local PostgreSQL - Set the OpenERP user password
   sudo: yes
@@ -33,6 +36,7 @@
                    password={{ openerp_config_db_passwd }}
   when: openerp_config_db_host in [False, 'localhost', '127.0.0.1']
         and openerp_config_db_passwd is defined and openerp_config_db_passwd
+        and openerp_postgresql_set_user
 
 - name: Remote PostgreSQL - Active the 'unaccent' extension on databases
   delegate_to: "{{ openerp_config_db_host }}"
@@ -44,6 +48,7 @@
   changed_when: "'already exists' not in create_extension.stderr"
   when: openerp_config_db_host not in [False, 'localhost', '127.0.0.1']
         and openerp_config_unaccent
+        and openerp_postgresql_active_unaccent
 
 - name: Local PostgreSQL - Active the 'unaccent' extension on databases
   sudo: yes
@@ -54,3 +59,4 @@
   changed_when: False
   when: openerp_config_db_host in [False, 'localhost', '127.0.0.1']
         and openerp_config_unaccent
+        and openerp_postgresql_active_unaccent

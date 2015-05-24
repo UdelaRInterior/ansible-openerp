@@ -69,6 +69,7 @@
         version={{ openerp_repo_rev }}
         update={{ project_path.stat.exists == False and 'yes'
                   or (openerp_repo_update and 'yes' or 'no') }}
+        depth={{ openerp_repo_depth }}
   when: openerp_repo_type == 'git' and openerp_repo_url
   notify: Restart OpenERP
   tags:

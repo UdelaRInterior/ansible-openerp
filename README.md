@@ -101,6 +101,8 @@ openerp_repo_update: True   # Update the working copy or not. This option is
                             # working copy is always processed on the given
                             # revision)
                             # WARNING: uncommited changes will be discarded!
+openerp_repo_depth: 1       # Set to 0 to clone the full history
+                            # (option not supported with hg repository)
 
 # Tasks related to PostgreSQL
 openerp_postgresql_set_user: True

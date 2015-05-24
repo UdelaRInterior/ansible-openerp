@@ -103,6 +103,9 @@ openerp_repo_update: True   # Update the working copy or not. This option is
                             # WARNING: uncommited changes will be discarded!
 openerp_repo_depth: 1       # Set to 0 to clone the full history
                             # (option not supported with hg repository)
+openerp_wkhtmltox_version: 0.12.2.1 # Download URLs available in the
+                                    # 'openerp_wkhtmltox_urls' variable
+                                    # (see 'vars/main.yml')
 
 # Tasks related to PostgreSQL
 openerp_postgresql_set_user: True

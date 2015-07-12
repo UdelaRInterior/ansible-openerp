@@ -38,8 +38,7 @@ openerp_debian_packages:
     - python-zsi
 
 openerp_wkhtmltox_urls:
-    - http://sourceforge.net/projects/wkhtmltopdf/files/{{ openerp_wkhtmltox_version }}/wkhtmltox-{{ openerp_wkhtmltox_version }}_linux-{{ ansible_distribution_release }}-{{ openerp_debian_arch }}.deb
-    - http://sourceforge.net/projects/wkhtmltopdf/files/archive/{{ openerp_wkhtmltox_version }}/wkhtmltox-{{ openerp_wkhtmltox_version }}_linux-{{ ansible_distribution_release }}-{{ openerp_debian_arch }}.deb
+    - http://download.gna.org/wkhtmltopdf/0.12/{{ openerp_wkhtmltox_version }}/wkhtmltox-{{ openerp_wkhtmltox_version }}_linux-{{ ansible_distribution_release }}-{{ openerp_debian_arch }}.deb
 
 openerp_wkhtmltox_dest: "/root/wkhtmltox-{{ openerp_wkhtmltox_version }}_linux-{{ ansible_distribution_release }}-{{ openerp_debian_arch }}.deb"
 

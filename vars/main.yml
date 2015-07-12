@@ -39,6 +39,7 @@ openerp_debian_packages:
 
 openerp_wkhtmltox_urls:
     - http://download.gna.org/wkhtmltopdf/0.12/{{ openerp_wkhtmltox_version }}/wkhtmltox-{{ openerp_wkhtmltox_version }}_linux-{{ ansible_distribution_release }}-{{ openerp_debian_arch }}.deb
+    - http://nightly.odoo.com/extra/wkhtmltox-{{ odoo_wkhtmltox_version }}.2_linux-{{ ansible_distribution_release }}-{{ odoo_debian_arch }}.deb
 
 openerp_wkhtmltox_dest: "/root/wkhtmltox-{{ openerp_wkhtmltox_version }}_linux-{{ ansible_distribution_release }}-{{ openerp_debian_arch }}.deb"
 

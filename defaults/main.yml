@@ -26,6 +26,7 @@ openerp_wkhtmltox_version: 0.12.1   # Download URLs available in the
 
 # Tasks related to PostgreSQL
 openerp_postgresql_set_user: True
+openerp_postgresql_user_role_attr: CREATEDB,NOSUPERUSER
 openerp_postgresql_active_unaccent: True
 
 # Configuration options

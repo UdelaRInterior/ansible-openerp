@@ -6,7 +6,7 @@
   sudo: yes
   sudo_user: postgres
   postgresql_user: name={{ openerp_config_db_user }}
-                   role_attr_flags=CREATEDB,NOSUPERUSER
+                   role_attr_flags={{ openerp_postgresql_user_role_attr }}
   when: openerp_config_db_host not in [False, 'localhost', '127.0.0.1']
         and openerp_postgresql_set_user
 
@@ -14,7 +14,7 @@
   sudo: yes
   sudo_user: postgres
   postgresql_user: name={{ openerp_config_db_user }}
-                   role_attr_flags=CREATEDB,NOSUPERUSER
+                   role_attr_flags={{ openerp_postgresql_user_role_attr }}
   when: openerp_config_db_host in [False, 'localhost', '127.0.0.1']
         and openerp_postgresql_set_user
 

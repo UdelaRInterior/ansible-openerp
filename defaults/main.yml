@@ -79,7 +79,7 @@ openerp_config_static_http_enable: False
 openerp_config_static_http_url_prefix: None
 openerp_config_syslog: False
 openerp_config_timezone: False
-openerp_config_translate_modules: ['all']
+openerp_config_translate_modules: "['all']"
 openerp_config_unaccent: True                       # ignored for 6.0
 openerp_config_virtual_memory_limit: 805306368      # 6.1 only
 openerp_config_virtual_memory_reset: 671088640      # 6.1 only

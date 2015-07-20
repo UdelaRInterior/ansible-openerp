@@ -6,7 +6,7 @@
 - name: Download wkhtmltox
   get_url: url={{ item }}
            dest={{ openerp_wkhtmltox_dest }}
-  with_items: openerp_wkhtmltox_urls
+  with_items: "{{ openerp_wkhtmltox_urls }}"
   ignore_errors: True
   when: openerp_wkhtmltox_version is defined and openerp_wkhtmltox_version != False
 
@@ -20,7 +20,7 @@
 
 - name: Install wkhtmltox dependencies
   apt:  pkg={{ item }}
-  with_items: openerp_wkhtmltox_depends
+  with_items: "{{ openerp_wkhtmltox_depends }}"
   when: openerp_wkhtmltox_version is defined and openerp_wkhtmltox_version != False and openerp_wkhtmltox_pkg.stat.exists
 
 - name: Install wkhtmltox

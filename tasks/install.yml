@@ -4,7 +4,7 @@
   apt:  pkg={{ item }}
         state=installed
         update_cache=yes
-  with_items: openerp_required_tools
+  with_items: "{{ openerp_required_tools }}"
   tags:
     - openerp_required_tools
 
@@ -12,7 +12,7 @@
   apt:  pkg={{ item }}
         state=installed
         update_cache=yes
-  with_items: openerp_debian_packages
+  with_items: "{{ openerp_debian_packages }}"
   tags:
     - openerp_packages
 
@@ -50,8 +50,8 @@
     - openerp_project
 
 - name: Clone project repository (Mercurial)
-  sudo: yes
-  sudo_user: "{{ openerp_user }}"
+  become: yes
+  become_user: "{{ openerp_user }}"
   hg:   repo={{ openerp_repo_url }}
         dest={{ openerp_repo_dest }}
         revision={{ openerp_repo_rev }}
@@ -62,8 +62,8 @@
     - openerp_project
 
 - name: Clone project repository (Git)
-  sudo: yes
-  sudo_user: "{{ openerp_user }}"
+  become: yes
+  become_user: "{{ openerp_user }}"
   git:  repo={{ openerp_repo_url }}
         dest={{ openerp_repo_dest }}
         version={{ openerp_repo_rev }}
@@ -74,12 +74,3 @@
   notify: Restart OpenERP
   tags:
     - openerp_project
-
-- name: Set SSH public keys for the OpenERP user
-  authorized_key: user={{ openerp_user }}
-                  key="{{ lookup('file', item) }}"
-  with_fileglob:
-    - "{{ openerp_user_sshkeys }}"
-  when: openerp_user_sshkeys is defined and openerp_user_sshkeys
-  tags:
-    - openerp_ssh

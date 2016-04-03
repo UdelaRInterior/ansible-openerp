@@ -25,4 +25,5 @@
 
 - name: Install wkhtmltox
   apt:  deb="/root/wkhtmltox-{{ openerp_wkhtmltox_version }}_linux-{{ ansible_distribution_release }}-{{ openerp_debian_arch }}.deb"
+        force=yes
   when: openerp_wkhtmltox_version is defined and openerp_wkhtmltox_version != False and openerp_wkhtmltox_pkg.stat.exists

@@ -5,6 +5,13 @@
     - openerp
     - openerp_install
 
+- include: install_extra.yml
+  when: openerp_user_sshkeys is defined and openerp_user_sshkeys
+  tags:
+    - openerp
+    - openerp_install
+    - openerp_install_extra
+
 - include: wkhtmltox.yml
   tags:
     - openerp
@@ -15,7 +22,14 @@
     - openerp
     - openerp_config
 
-- include: postgresql.yml
+- include: postgresql_local.yml
+  when: openerp_config_db_host in [False, 'localhost', '127.0.0.1']
+  tags:
+    - openerp
+    - openerp_postgresql
+
+- include: postgresql_remote.yml
+  when: openerp_config_db_host not in [False, 'localhost', '127.0.0.1']
   tags:
     - openerp
     - openerp_postgresql

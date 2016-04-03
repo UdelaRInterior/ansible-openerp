@@ -1,0 +1,36 @@
+---
+
+- name: Remote PostgreSQL - Ensure PostgreSQL is running
+  delegate_to: "{{ openerp_config_db_host }}"
+  remote_user: "{{ openerp_config_db_host_user }}"
+  service: name=postgresql state=started
+  when: openerp_postgresql_set_user
+        or (openerp_config_unaccent and openerp_postgresql_active_unaccent)
+
+- name: Remote PostgreSQL - Add the OpenERP user
+  delegate_to: "{{ openerp_config_db_host }}"
+  remote_user: "{{ openerp_config_db_host_user }}"
+  become: yes
+  become_user: postgres
+  postgresql_user: name={{ openerp_config_db_user }}
+                   role_attr_flags={{ openerp_postgresql_user_role_attr }}
+  when: openerp_postgresql_set_user
+
+- name: Remote PostgreSQL - Set the OpenERP user password
+  delegate_to: "{{ openerp_config_db_host }}"
+  remote_user: "{{ openerp_config_db_host_user }}"
+  become: yes
+  become_user: postgres
+  postgresql_user: name={{ openerp_config_db_user }}
+                   password={{ openerp_config_db_passwd }}
+  when: openerp_config_db_passwd is defined and openerp_config_db_passwd
+        and openerp_postgresql_set_user
+
+- name: Remote PostgreSQL - Active the 'unaccent' extension on databases
+  delegate_to: "{{ openerp_config_db_host }}"
+  remote_user: "{{ openerp_config_db_host_user }}"
+  become: yes
+  become_user: postgres
+  postgresql_ext: name=unaccent db=template1
+  when: openerp_config_unaccent
+        and openerp_postgresql_active_unaccent

@@ -1,0 +1,9 @@
+---
+
+- name: Set SSH public keys for the OpenERP user
+  authorized_key: user={{ openerp_user }}
+                  key="{{ lookup('file', item) }}"
+  with_fileglob:
+    - "{{ openerp_user_sshkeys }}"
+  tags:
+    - openerp_ssh

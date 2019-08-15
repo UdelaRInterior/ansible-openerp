@@ -1,40 +1,48 @@
 ---
 
-- include: install.yml
+- include_tasks: install.yml
   tags:
     - openerp
     - openerp_install
 
-- include: install_extra.yml
-  when: openerp_user_sshkeys is defined and openerp_user_sshkeys
+- name: see variables
+  debug: 
+    var: "{{ item }}"
+  with_items:
+  - openerp_user_sshkeys
+  - openerp_config_db_host
+  - openerp_config_db_host not in [False, 'localhost', '127.0.0.1']
+
+- include_tasks: install_extra.yml
+  when: openerp_user_sshkeys is defined and openerp_user_sshkeys | bool
   tags:
     - openerp
     - openerp_install
     - openerp_install_extra
 
-- include: wkhtmltox.yml
+- include_tasks: wkhtmltox.yml
   tags:
     - openerp
     - openerp_wkhtmltox
 
-- include: config.yml
+- include_tasks: config.yml
   tags:
     - openerp
     - openerp_config
 
-- include: postgresql_local.yml
+- include_tasks: postgresql_local.yml
   when: openerp_config_db_host in [False, 'localhost', '127.0.0.1']
   tags:
     - openerp
     - openerp_postgresql
 
-- include: postgresql_remote.yml
+- include_tasks: postgresql_remote.yml
   when: openerp_config_db_host not in [False, 'localhost', '127.0.0.1']
   tags:
     - openerp
     - openerp_postgresql
 
-- include: service.yml
+- include_tasks: service.yml
   tags:
     - openerp
     - openerp_service

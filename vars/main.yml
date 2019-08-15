@@ -5,6 +5,7 @@ openerp_required_tools:
     - git
     - mercurial
     - python-pip
+    - postgresql
 
 openerp_debian_packages:
     - python-dev

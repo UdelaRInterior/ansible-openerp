@@ -1,20 +1,23 @@
 ---
 
 - name: Install required tools
-  apt:  pkg={{ item }}
+  apt:  pkg="{{ openerp_required_tools }}"
         state=installed
         update_cache=yes
-  with_items: "{{ openerp_required_tools }}"
   tags:
     - openerp_required_tools
 
 - name: Install OpenERP dependencies
-  apt:  pkg={{ item }}
+  apt:  pkg="{{ openerp_debian_packages }}"
         state=installed
         update_cache=yes
-  with_items: "{{ openerp_debian_packages }}"
   tags:
     - openerp_packages
+
+- name: ver variables
+  debug:
+    var: ansible_lsb
+    verbosity: 3
 
 - name: Install OpenERP dependencies (Debian >= 7)
   apt:  pkg=python-babel

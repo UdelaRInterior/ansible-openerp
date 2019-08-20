@@ -19,14 +19,14 @@
 - name: Install OpenERP dependencies (Debian >= 7)
   apt:  pkg=python-babel
         state=installed
-  when: ansible_os_family == "Debian" and ansible_distribution_version.split(".")[0]|int >= 7
+  when: ansible_distribution == 'Debian' and ansible_distribution_version is version('7.0', '>=')
   tags:
     - openerp_packages
 
 - name: Install OpenERP dependencies (Debian < 7)
   apt:  pkg=python-pybabel
         state=installed
-  when: ansible_os_family == "Debian" and ansible_distribution_version.split(".")[0]|int < 7
+  when: ansible_distribution == 'Debian' and ansible_distribution_version is version('7.0', '<')
   tags:
     - openerp_packages
 
